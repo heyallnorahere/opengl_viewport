@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opengl_viewport", "opengl_viewport\opengl_viewport.vcxproj", "{9B9CEF2A-ACDF-4A2C-868A-7BF8CD80A374}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "viewport_test", "viewport_test\viewport_test.vcxproj", "{5BD45C3B-B9B9-4633-B0B6-08B115EA3E07}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9B9CEF2A-ACDF-4A2C-868A-7BF8CD80A374} = {9B9CEF2A-ACDF-4A2C-868A-7BF8CD80A374}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9B9CEF2A-ACDF-4A2C-868A-7BF8CD80A374}.Debug|x64.ActiveCfg = Debug|x64
+		{9B9CEF2A-ACDF-4A2C-868A-7BF8CD80A374}.Debug|x64.Build.0 = Debug|x64
+		{9B9CEF2A-ACDF-4A2C-868A-7BF8CD80A374}.Debug|x86.ActiveCfg = Debug|x64
+		{9B9CEF2A-ACDF-4A2C-868A-7BF8CD80A374}.Release|x64.ActiveCfg = Release|x64
+		{9B9CEF2A-ACDF-4A2C-868A-7BF8CD80A374}.Release|x64.Build.0 = Release|x64
+		{9B9CEF2A-ACDF-4A2C-868A-7BF8CD80A374}.Release|x86.ActiveCfg = Release|x64
+		{5BD45C3B-B9B9-4633-B0B6-08B115EA3E07}.Debug|x64.ActiveCfg = Debug|x64
+		{5BD45C3B-B9B9-4633-B0B6-08B115EA3E07}.Debug|x64.Build.0 = Debug|x64
+		{5BD45C3B-B9B9-4633-B0B6-08B115EA3E07}.Debug|x86.ActiveCfg = Debug|x64
+		{5BD45C3B-B9B9-4633-B0B6-08B115EA3E07}.Release|x64.ActiveCfg = Release|x64
+		{5BD45C3B-B9B9-4633-B0B6-08B115EA3E07}.Release|x64.Build.0 = Release|x64
+		{5BD45C3B-B9B9-4633-B0B6-08B115EA3E07}.Release|x86.ActiveCfg = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {17ACE84A-1010-4011-9978-E612CC6A4F36}
+	EndGlobalSection
+EndGlobal
