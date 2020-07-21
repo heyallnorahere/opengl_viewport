@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>opengl_viewport</id>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <description>
       please report any issues to the github repo
     </description>
@@ -19,7 +19,7 @@
     <file src="x64\Release\opengl_viewport.dll" target="build/native/bin/x64/Release"/>
     <file src="x64\Debug\opengl_viewport.lib" target="build/native/lib/x64/Debug"/>
     <file src="x64\Debug\opengl_viewport.dll" target="build/native/bin/x64/Debug"/>
-    <file src="*.h" target="build/native/include"/>
+    <file src="opengl_viewport\*.h" target="build/native/include"/>
     <file src="opengl_viewport.props" target="build/native"/>
     <file src="LICENSE.txt" target="metadata/LICENSE.txt"/>
   </files>
