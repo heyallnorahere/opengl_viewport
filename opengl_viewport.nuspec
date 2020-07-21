@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>opengl_viewport</id>
+    <version>1.0</version>
+    <description>
+      please report any issues to the github repo
+    </description>
+    <tags>Native native OpenGL opengl Opengl dynamic Dynamic win32 Win32</tags>
+    <projectUrl>https://github.com/yodasoda1219/opengl_viewport</projectUrl>
+    <license type="file">metadata/LICENSE</license>
+    <authors>Theo Beda</authors>
+    <dependencies>
+        <dependency id="unofficial-flayan-glew" version="2.1.0"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="x64\Release\opengl_viewport.lib" target="build/native/lib/x64/Release"/>
+    <file src="x64\Release\opengl_viewport.dll" target="build/native/bin/x64/Release"/>
+    <file src="x64\Debug\opengl_viewport.lib" target="build/native/lib/x64/Debug"/>
+    <file src="x64\Debug\opengl_viewport.dll" target="build/native/bin/x64/Debug"/>
+    <file src="*.h" target="build/native/include"/>
+    <file src="opengl_viewport.props" target="build/native"/>
+    <file src="LICENSE.txt" target="metadata/LICENSE"/>
+  </files>
+</package>

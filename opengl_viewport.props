@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ModelLoaderLibs Condition="'$(Configuration.ToLower())' == 'release'" Include="$(MSBuildThisFileDirectory)lib\x64\Release\*.lib" />
+    <ModelLoaderLibs Condition="'$(Configuration.ToLower())' == 'debug'" Include="$(MSBuildThisFileDirectory)lib\x64\Debug\*.lib" />
+  </ItemGroup>
+  <PropertyGroup>
+    <!-- Expland the items to a property -->
+    <ModelLoaderLibraries>@(ModelLoaderLibs)</ModelLoaderLibraries>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(ModelLoaderLibraries);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Target Name="ModelLoader_AfterBuild_Release" Condition="'$(Configuration.ToLower())' == 'release'" AfterTargets="AfterBuild">
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)bin/x64/Release/opengl_viewport.dll" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+  </Target>
+  <Target Name="ModelLoader_AfterBuild_Debug"  Condition="'$(Configuration.ToLower())' == 'debug'" AfterTargets="AfterBuild">
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)bin/x64/Debug/opengl_viewport.dll" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+  </Target>
+</Project>
