@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ModelLoaderLibs Condition="'$(Configuration.ToLower())' == 'release'" Include="$(MSBuildThisFileDirectory)lib\x64\Release\*.lib" />
-    <ModelLoaderLibs Condition="'$(Configuration.ToLower())' == 'debug'" Include="$(MSBuildThisFileDirectory)lib\x64\Debug\*.lib" />
+    <OpenGLViewportLibs Condition="'$(Configuration.ToLower())' == 'release'" Include="$(MSBuildThisFileDirectory)lib\x64\Release\*.lib" />
+    <OpenGLViewportLibs Condition="'$(Configuration.ToLower())' == 'debug'" Include="$(MSBuildThisFileDirectory)lib\x64\Debug\*.lib" />
   </ItemGroup>
   <PropertyGroup>
     <!-- Expland the items to a property -->
-    <ModelLoaderLibraries>@(ModelLoaderLibs)</ModelLoaderLibraries>
+    <OpenGLViewportLibraries>@(OpenGLViewportLibs)</OpenGLViewportLibraries>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>$(ModelLoaderLibraries);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(OpenGLViewportLibraries);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Target Name="ModelLoader_AfterBuild_Release" Condition="'$(Configuration.ToLower())' == 'release'" AfterTargets="AfterBuild">
