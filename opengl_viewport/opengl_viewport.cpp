@@ -28,13 +28,22 @@ int __stdcall DllMain(HINSTANCE instance, unsigned long reason, void* reserved) 
 struct context_attribs {
 	opengl_viewport* owner;
 	int major_version, minor_version;
+	opengl_viewport::viewport_attribs::render_target target;
 };
-opengl_viewport::opengl_viewport(const viewport_attribs& attribs) {
+opengl_viewport::opengl_viewport(const viewport_attribs& attribs) : is_child(attribs.target == viewport_attribs::child_window) {
 	context_attribs* ca = new context_attribs;
 	ca->owner = this;
 	ca->major_version = attribs.major_version;
 	ca->minor_version = attribs.minor_version;
-	CreateWindowA(CLASS_NAME, NULL, WS_VISIBLE | WS_CHILDWINDOW, attribs.x, attribs.y, attribs.width, attribs.height, attribs.parent, NULL, NULL, ca);
+	ca->target = attribs.target;
+	switch (ca->target) {
+	case viewport_attribs::child_window:
+		CreateWindowA(CLASS_NAME, NULL, WS_VISIBLE | WS_CHILDWINDOW, attribs.x, attribs.y, attribs.width, attribs.height, attribs.window, NULL, NULL, ca);
+		break;
+	case viewport_attribs::passed_window:
+		this->init(attribs.window, ca);
+		break;
+	}
 }
 void opengl_viewport::clear() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -43,7 +52,8 @@ void opengl_viewport::swap_buffers() {
 	SwapBuffers(this->dc);
 }
 opengl_viewport::~opengl_viewport() {
-	DestroyWindow(this->window);
+	if (this->is_child)
+		DestroyWindow(this->window);
 }
 opengl_viewport* previous = NULL;
 opengl_viewport* current = NULL;
@@ -70,14 +80,29 @@ void opengl_viewport::use(opengl_viewport* viewport) {
 		break;
 	}
 }
+std::map<HWND, opengl_viewport*> viewports;
 LRESULT __stdcall opengl_viewport::window_proc(HWND window, unsigned int msg, WPARAM w_param, LPARAM l_param) {
-	static std::map<HWND, opengl_viewport*> viewports;
 	switch (msg) {
 	case WM_CREATE:
 	{
-		CREATESTRUCT cs = *(CREATESTRUCT*)l_param;
-		context_attribs* attr = (context_attribs*)cs.lpCreateParams;
-		opengl_viewport* me = attr->owner;
+		CREATESTRUCT* cs = (CREATESTRUCT*)l_param;
+		context_attribs* attr = (context_attribs*)cs->lpCreateParams;
+		attr->owner->init(window, attr);
+		break;
+	}
+	case WM_DESTROY:
+		if (viewports[window])
+			wglDeleteContext(viewports[window]->context);
+		break;
+	default:
+		return DefWindowProc(window, msg, w_param, l_param);
+	}
+	return 0;
+}
+void opengl_viewport::init(HWND window, void* context_attr) {
+	{
+		context_attribs* attr = (context_attribs*)context_attr;
+		opengl_viewport* me = this;
 		me->window = window;
 		me->dc = GetDC(me->window);
 		HDC& dc = me->dc;
@@ -116,17 +141,17 @@ LRESULT __stdcall opengl_viewport::window_proc(HWND window, unsigned int msg, WP
 			wglMakeCurrent(dc, me->context);
 		}
 		else {
-			MessageBoxA(cs.hwndParent, "could not get 3.x context, instead created 2.1 context", "opengl viewport lib", NULL);
+			MessageBoxA(attr->target == viewport_attribs::child_window ? GetWindow(this->window, GW_OWNER) : this->window, "could not get 3.x context, instead created 2.1 context", "opengl viewport lib", NULL);
 			me->context = temp;
 		}
 		std::string msg = "[opengl viewport lib] successfully created context with version " + std::string((char*)glGetString(GL_VERSION)) + "\n";
 		OutputDebugStringA(msg.c_str());
 		viewports.insert(std::pair<HWND, opengl_viewport*>(window, me));
 		delete attr;
-		break;
+		return;
 	}
 	{
-	error:
+		error:
 		char error_str[256];
 		unsigned long last_error = GetLastError();
 		ultoa(last_error, error_str, 16);
@@ -134,15 +159,5 @@ LRESULT __stdcall opengl_viewport::window_proc(HWND window, unsigned int msg, WP
 		OutputDebugStringA(error_str);
 		OutputDebugString(TEXT("\n"));
 		DestroyWindow(window);
-		return last_error;
-		break;
 	}
-	case WM_DESTROY:
-		if (viewports[window])
-			wglDeleteContext(viewports[window]->context);
-		break;
-	default:
-		return DefWindowProc(window, msg, w_param, l_param);
-	}
-	return 0;
 }

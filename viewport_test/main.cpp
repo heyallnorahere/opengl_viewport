@@ -42,11 +42,12 @@ LRESULT __stdcall wndproc(HWND window, unsigned int msg, WPARAM w_param, LPARAM 
 		CREATESTRUCT* cs = (CREATESTRUCT*)l_param;
 		opengl_viewport::viewport_attribs vpa;
 		ZeroMemory(&vpa, sizeof(opengl_viewport::viewport_attribs));
-		vpa.parent = window;
+		vpa.window = window;
 		vpa.width = cs->cx;
 		vpa.height = cs->cy;
 		vpa.major_version = 4;
 		vpa.minor_version = 6;
+		vpa.target = opengl_viewport::viewport_attribs::passed_window;
 		vp = new opengl_viewport(vpa);
 		struct vertex {
 			glm::vec3 pos, color;
